@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dq_o4213z%so2uakp$+6z51dz0+b!3df6c=$yb19fihajfp$$i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'f777886955a4.ngrok-free.app']     # ngrok-url
 
 
 # Application definition
@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "chatapp",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -68,7 +71,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = "core.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        # "BACKEND": "channels.layers.InMemoryChannelLayer"
+        # Use Redis in production: 
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)],},
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -121,3 +133,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
